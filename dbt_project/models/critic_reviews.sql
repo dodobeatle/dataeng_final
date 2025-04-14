@@ -1,0 +1,1 @@
+SELECT * FROM {{ source('mlops_raw', 'critic_reviews') }}
