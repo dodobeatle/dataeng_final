@@ -4,6 +4,7 @@ from dagster_dbt import DbtCliResource, DbtProject
 import sqlalchemy
 import pandas as pd
 import os
+from pathlib import Path
 
 airbyte_resource = AirbyteResource(
     host=EnvVar("AIRBYTE_HOST"),
@@ -13,12 +14,12 @@ airbyte_resource = AirbyteResource(
 )
 
 
-dbt_resource = DbtCliResource(
-    profile="dbt_project",
-    #project_dir=EnvVar("DBT_PROJECT_DIR"),
-    #profiles_dir=EnvVar("DBT_PROFILES_DIR")
-    project_dir="/home/pedro/workspace/utnfrt/dataeng_final/dbt_project",
-    #profiles_dir="/home/pedro/.dbt/profiles.yml"    
+dbt_resource = DbtCliResource(    
+    #project_dir="/home/pedro/workspace/utnfrt/dataeng_final/dbt_project",
+    project_dir=Path(__file__).joinpath("..",".." ,"..","dbt_project").resolve(),
+    profiles_dir=Path.home().joinpath(".dbt"),
+    target="dev",
+    profile="dbt_project"       
 )
 
 
