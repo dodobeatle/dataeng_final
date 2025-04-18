@@ -18,7 +18,7 @@ dbt_sync_job = define_asset_job("dbt_sync_job" , selection=AssetSelection.groups
 
 data_prep_job = define_asset_job("data_prep_job", selection=AssetSelection.groups("data_preparation"))
 
-sync_all_jobs = define_asset_job(name="sync_all_jobs", selection="*")
+sync_all_jobs = define_asset_job(name="sync_all_jobs", selection=AssetSelection.all())
 #--------------------------------Definitions--------------------------------    
 defs = Definitions(
     assets=[airbyte_connections, *dbt_assets, *train_assets],
