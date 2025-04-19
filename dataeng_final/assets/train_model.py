@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 
 @multi_asset(
     group_name="data_preparation",
-    ins={"preprocessed_data": AssetIn(key=AssetKey("movies"),
+    ins={"preprocessed_data": AssetIn(key=AssetKey("movies_users"),
         input_manager_key= "postgres_io_manager")
     },
     outs={
@@ -42,7 +42,16 @@ def split_data(context: AssetExecutionContext, preprocessed_training_data):
     """
     Splits the data for training the model.
     """
-    X_train, X_test, y_train, y_test = train_test_split(preprocessed_training_data, test_size=0.2, random_state=42)
+    # Assuming 'rating' is your target variable
+    X = preprocessed_training_data.drop(columns=['rating'])
+    y = preprocessed_training_data['rating']
+    
+    split_param = {
+        'test_size': 0.4,
+        'random_state': 42
+    }
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, **split_param)
     return X_train, X_test, y_train, y_test
 
 
