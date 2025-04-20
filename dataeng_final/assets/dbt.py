@@ -6,4 +6,4 @@ from ..dbt_integrations import dbt_project
     manifest=dbt_project.manifest_path
 )
 def dbt_analytics(context: AssetExecutionContext, dbt: DbtCliResource):
-    yield from dbt.cli(["run"], context=context).stream()
+    yield from dbt.cli(["run"], context=context).stream()   
