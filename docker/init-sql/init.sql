@@ -16,4 +16,13 @@ GRANT ALL ON SCHEMA public TO "dodobeatle@gmail.com";
 GRANT USAGE ON SCHEMA public TO "dodobeatle@gmail.com";
 ALTER DATABASE mlops OWNER TO "dodobeatle@gmail.com";
 
+
+CREATE DATABASE metabase;
+CREATE USER metabase WITH ENCRYPTED PASSWORD 'metabase';
+GRANT ALL PRIVILEGES ON DATABASE metabase TO metabase;
+GRANT ALL ON SCHEMA public TO metabase;
+GRANT USAGE ON SCHEMA public TO metabase;
+ALTER DATABASE metabase OWNER TO metabase;
+
+
 -- \du
