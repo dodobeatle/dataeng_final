@@ -1,4 +1,4 @@
-from dagster import Definitions, load_assets_from_modules, define_asset_job, AssetSelection
+from dagster import Definitions, load_assets_from_modules, define_asset_job, AssetSelection, ScheduleDefinition
 from dataeng_final.assets.airbyte import airbyte_connections
 from dataeng_final import assets  # noqa: TID252
 
@@ -19,6 +19,16 @@ dbt_sync_job = define_asset_job("dbt_sync_job" , selection=AssetSelection.groups
 data_prep_job = define_asset_job("data_prep_job", selection=AssetSelection.groups("data_preparation"))
 
 sync_all_jobs = define_asset_job(name="sync_all_jobs", selection=AssetSelection.all())
+
+
+#--------------------------------Schedules Definitions--------------------------------    
+
+daily_sync_schedule = ScheduleDefinition(
+    job=sync_all_jobs,
+    cron_schedule="0 0 * * *", # podria ser también @daily
+    execution_timezone="America/Argentina/Buenos_Aires"
+)
+
 #--------------------------------Definitions--------------------------------    
 defs = Definitions(
     assets=[airbyte_connections, *dbt_assets, *train_assets],
@@ -28,5 +38,6 @@ defs = Definitions(
         "postgres_io_manager": postgres_io_manager.configured({
             "connection_string": "env:POSTGRES_CONNECTION_STRING",
             "schema": "target"}),
-    }
+    },
+    schedules=[daily_sync_schedule]
 )
